@@ -1,0 +1,93 @@
+class Barang:
+    def __init__(self, kode, nama, harga, stok):
+        self.kode = kode
+        self.nama = nama
+        self.harga = harga
+        self.stok = stok
+
+    def update_stok(self, jumlah):
+        if self.stok + jumlah < 0: 
+          print("\033[1mError: Pengurangan melebihi stok!\033[0m") 
+        else: self.stok += jumlah
+    def info_barang(self):
+        return f"Kode\t: {self.kode}\nNama\t: {self.nama}\nHarga\t: Rp{self.harga}\nStok\t: {self.stok}\n"
+
+data = [
+    ('AAA', 'Beras', 16000, 100),
+    ('AAI', 'Minyak', 16000, 100),
+    ('AAU', 'Telur', 28000, 100),
+    ('AAE', 'Gula', 17000, 100),
+    ('AAO', 'Gas', 22000, 100)
+]
+
+daftar_barang = []
+dict_barang = {}
+
+for kode, nama, harga, stok in data:
+    barang = Barang(kode, nama, harga, stok)
+    daftar_barang.append(barang)
+    dict_barang[kode] = barang
+
+def tambah_barang(brg):
+    daftar_barang.append(brg)
+    dict_barang[brg.kode] = brg
+
+def tampilkan_inventaris():
+    for barang in daftar_barang:
+        print(barang.info_barang())
+
+def cari_barang(kode):
+    if kode in dict_barang:
+        print(dict_barang[kode].info_barang())
+    else:
+        print("Barang tidak ditemukan")
+
+def main():
+    while True:
+        print("\n\033[1mSelamat datang!\033[0m\n")
+        print('Apa yang Anda butuhkan?')
+        print("\t1. Tambah Barang")
+        print("\t2. Tampilkan Inventaris")
+        print("\t3. Cari Barang")
+        print("\t4. Update Stok")
+        print("\t5. Keluar")
+
+        pilihan = input("Pilih menu (1/2/3/4/5): ")
+
+        if pilihan == "1":
+            kode = input("Masukkan kode barang: ")
+            nama = input("Masukkan nama barang: ")
+            harga = float(input("Masukkan harga barang: "))
+            stok = int(input("Masukkan stok barang: "))
+            brg = Barang(kode, nama, harga, stok)
+            tambah_barang(brg)
+            print("\033[3mBarang berhasil ditambahkan!\033[0m")
+
+        elif pilihan == "2":
+            tampilkan_inventaris()
+
+        elif pilihan == "3":
+            kode = input("Masukkan kode barang yang ingin dicari: ")
+            cari_barang(kode)
+
+        elif pilihan == "4":
+            kode = input("Masukkan kode barang : ")
+            jumlah = int(input("Masukkan jumlah bertambah/berkurang saat ini : "))
+            try:
+                if kode in dict_barang:
+                    dict_barang[kode].update_stok(jumlah)
+                    print("\033[3mStok berhasil diupdate!\033[0m")
+                else:
+                    print("\033[1mBarang tidak ditemukan\033[0m")
+            except ValueError:
+                print("\033[1mJumlah stok harus berupa angka!\033[0m")
+
+        elif pilihan == "5":
+            print("Terima kasih!\nProgram telahselesai.")
+            break
+
+        else:
+            print("\033[1mPilihan tidak valid!\033[0m\nSilakan coba lagi.")
+
+if __name__ == "__main__":
+    main()
