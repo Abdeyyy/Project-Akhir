@@ -88,6 +88,8 @@ def main():
 
         elif pilihan == "3":
             kode = input("Masukkan kode barang yang ingin dicari: ")
+            if not kode:
+              print('Tidak boleh kosong')
             cari_barang(kode)
 
         elif pilihan == "4":
