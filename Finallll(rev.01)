@@ -6,8 +6,8 @@ class Barang:
         self.stok = stok
 
     def update_stok(self, jumlah):
-        if self.stok + jumlah < 0: 
-          print("\033[1mError: Pengurangan melebihi stok!\033[0m") 
+        if self.stok + jumlah < 0:
+          print("\033[1mError: Pengurangan melebihi stok!\033[0m")
         else: self.stok += jumlah
     def info_barang(self):
         return f"Kode\t: {self.kode}\nNama\t: {self.nama}\nHarga\t: Rp{self.harga}\nStok\t: {self.stok}\n"
@@ -29,6 +29,10 @@ for kode, nama, harga, stok in data:
     dict_barang[kode] = barang
 
 def tambah_barang(brg):
+  if brg.kode in dict_barang:
+    print("\033[1mKode barang sudah ada!\033[0m")
+    dict_barang[brg.kode].update_stok(brg.stok)
+  else:
     daftar_barang.append(brg)
     dict_barang[brg.kode] = brg
 
@@ -56,12 +60,28 @@ def main():
 
         if pilihan == "1":
             kode = input("Masukkan kode barang: ")
+            if not kode:
+              print('Tidak boleh kosong')
             nama = input("Masukkan nama barang: ")
-            harga = float(input("Masukkan harga barang: "))
-            stok = int(input("Masukkan stok barang: "))
-            brg = Barang(kode, nama, harga, stok)
-            tambah_barang(brg)
-            print("\033[3mBarang berhasil ditambahkan!\033[0m")
+            if not nama:
+              print('Tidak boleh kosong')
+            harga = (input("Masukkan harga barang: "))
+            if not harga:
+              print('Tidak boleh kosong')
+            stok = (input("Masukkan stok barang: "))
+            if not stok:
+              print('Tidak boleh kosong')
+            try:
+              kode=str(kode)
+              nama=str(nama)
+              harga=float(harga)
+              stok=int(stok) 
+              brg = Barang(kode, nama, harga, stok)
+              tambah_barang(brg)
+              print("\033[3mUpdate berhasil!!\033[0m")
+            except:
+              print('Ada kesalahan tipe data!')
+              print('Gagal menambahkan barang')
 
         elif pilihan == "2":
             tampilkan_inventaris()
@@ -72,8 +92,14 @@ def main():
 
         elif pilihan == "4":
             kode = input("Masukkan kode barang : ")
-            jumlah = int(input("Masukkan jumlah bertambah/berkurang saat ini : "))
+            print('Apabila berkurang, tambahkan minus (-)')
+            print('Apabila bertambah, masukkan angka seperti biasa')
+            jumlah = input("Masukkan jumlah bertambah/berkurang saat ini : ")
+            if not jumlah:
+              print('Tidak boleh kosong. Coba lagi!')
+              break
             try:
+                jumlah=int(jumlah)
                 if kode in dict_barang:
                     dict_barang[kode].update_stok(jumlah)
                     print("\033[3mStok berhasil diupdate!\033[0m")
@@ -83,11 +109,11 @@ def main():
                 print("\033[1mJumlah stok harus berupa angka!\033[0m")
 
         elif pilihan == "5":
-            print("Terima kasih!\nProgram telahselesai.")
+            print("Terima kasih!\nProgram telah selesai.")
             break
 
         else:
             print("\033[1mPilihan tidak valid!\033[0m\nSilakan coba lagi.")
 
 if __name__ == "__main__":
-    main()
+  main()
